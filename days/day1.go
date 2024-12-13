@@ -13,6 +13,14 @@ type Day1 utils.Problem
 
 func NewDay1() *Day1 {
 	ret := Day1{}
+
+	p1, err := utils.ReadFile(p1_filepath)
+	if err != nil {
+		panic(err)
+	}
+
+	ret.Part1Input = p1
+
 	return &ret
 }
 

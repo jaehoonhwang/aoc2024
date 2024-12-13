@@ -1,14 +1,14 @@
 package utils
 
 import (
-	"fmt"
-	"io"
+	"bufio"
 	"log"
 	"os"
-	"strings"
 )
 
 func ReadFile(filename string) ([]string, error) {
+	ret := []string{}
+
 	file, err := os.Open(filename)
 	if err != nil {
 		log.Fatal(err)
@@ -21,11 +21,14 @@ func ReadFile(filename string) ([]string, error) {
 		}
 	}()
 
-	fileBytes, err := io.ReadAll(file)
-	if err != nil {
-		return []string{}, err
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		ret = append(ret, scanner.Text())
 	}
-	fmt.Print(fileBytes)
 
-	return strings.Split(string(fileBytes), "\n"), nil
+	if err := scanner.Err(); err != nil {
+		return ret, nil
+	}
+
+	return ret, nil
 }
